@@ -1,6 +1,12 @@
 # Ansible Role: Black Mesa SourceCoop
 
+[![builds.sr.ht status](https://builds.sr.ht/~tleguern/ansible-role-black-mesa-sourcecoop.svg)](https://builds.sr.ht/~tleguern/ansible-role-black-mesa-sourcecoop?)
+
 An Ansible role that installs and upgrades the SourceCoop plugin for Black Mesa.
+
+There is no automatic testing for this role as because a Black Mesa dedicated server is roughly 27Go of data and exceed the capacity of SourceHut's build servers.
+
+For more information about SourceCoop please take a look at the [official repository](https://github.com/ampreeT/SourceCoop).
 
 ## Requirements
 
