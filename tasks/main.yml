@@ -1,0 +1,68 @@
+---
+- name: Check if sourcecoop is installed
+  stat:
+    path: "{{ sourcecoop_install_path }}/addons/sourcemod/plugins/srccoop.smx"
+  register: __sourcecoop_exists
+
+- name: Check if sourcecoop was installed using ansible
+  stat:
+    path: "{{ sourcecoop_install_path }}/cfg/sourcecoop/version.txt"
+  register: __sourcecoop_exists_ansible
+  when: __sourcecoop_exists.stat.exists
+
+- name: Check the currently installed version of sourcecoop
+  command:
+    cmd: grep -qF {{ sourcecoop_version }} "{{ sourcecoop_install_path }}/cfg/sourcecoop/version.txt"
+  register: __sourcecoop_current_version
+  changed_when: no
+  failed_when: no
+  when:
+    - __sourcecoop_exists.stat.exists
+    - __sourcecoop_exists_ansible.stat.exists
+
+- name: Remove the previous version
+  file:
+    path: "{{ sourcecoop_install_path }}/{{ item }}"
+    state: absent
+  loop:
+    - addons/sourcemod/
+    - models/props_xen/
+  when:
+    - __sourcecoop_exists.stat.exists
+    - __sourcecoop_current_version.rc is not defined or __sourcecoop_current_version.rc != 0
+
+- name: Install sourcecoop
+  when: 'not __sourcecoop_exists.stat.exists or not __sourcecoop_exists_ansible.stat.exists or __sourcecoop_current_version.rc != 0'
+  block:
+    - name: Download the requested version
+      get_url:
+        url: "{{ sourcecoop_url }}"
+        dest: /tmp
+
+    - name: Extract the downloaded file
+      unarchive:
+        remote_src: yes
+        src: "/tmp/{{ sourcecoop_target }}"
+        dest: "{{ sourcecoop_install_path }}/"
+        owner: "{{ steamcmd_user }}"
+        group: "{{ steamcmd_user }}"
+
+    - name: Remove the archive
+      file:
+        path: "/tmp/{{ sourcecoop_target }}"
+        state: absent
+
+    - name: Create the cfg directory
+      file:
+        path: "{{ sourcecoop_install_path }}/cfg/sourcecoop/"
+        state: directory
+        owner: "{{ steamcmd_user }}"
+        group: "{{ steamcmd_user }}"
+
+    - name: Write the current sourcecoop version
+      copy:
+        dest: "{{ sourcecoop_install_path }}/cfg/sourcecoop/version.txt"
+        content: "{{ sourcecoop_version }}"
+        owner: "{{ steamcmd_user }}"
+        group: "{{ steamcmd_user }}"
+      notify: "Restart black-mesa"

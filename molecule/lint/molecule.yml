@@ -1,0 +1,28 @@
+---
+dependency:
+  name: galaxy
+  enabled: no
+driver:
+  name: delegated
+  options:
+    managed: no
+    ansible_connection_options:
+      ansible_connection: local
+lint: |
+  yamllint */*.yml */*/*.yml
+platforms:
+  - name: instance
+provisioner:
+  name: ansible
+  config_options:
+    defaults:
+      interpreter_python: /usr/bin/python3
+verifier:
+  name: ansible
+scenario:
+  check_sequence:
+    - lint
+  converge_sequence:
+    - lint
+  test_sequence:
+    - lint

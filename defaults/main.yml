@@ -1,0 +1,5 @@
+---
+sourcecoop_url: "https://github.com/ampreeT/SourceCoop/releases/download/v{{ sourcecoop_version }}/sourcecoop-{{ sourcecoop_version }}.zip"
+sourcecoop_version: 1.0.4
+sourcecoop_target: "sourcecoop-{{ sourcecoop_version }}.zip"
+sourcecoop_install_path: "/home/{{ steamcmd_user }}/black-mesa/bms"
