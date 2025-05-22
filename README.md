@@ -30,9 +30,9 @@ Native variables:
 
 | Variable                  | Description            | Default |
 |---------------------------|------------------------|---------|
-| `sourcecoop_url`          | Download mirror        | `https://github.com/ampreeT/SourceCoop/releases/download/v{{ sourcecoop_version }}/sourcecoop-{{ sourcecoop_version }}.zip` |
-| `sourcecoop_version`      | Desired version        | `1.0.4` |
-| `sourcecoop_target`       | Archive name           | `sourcecoop-{{ sourcecoop_version }}.zip` |
+| `sourcecoop_url`          | Download mirror        | `https://github.com/ampreeT/SourceCoop/releases/download/v{{ sourcecoop_version }}/{{ sourcecoop_target }}` |
+| `sourcecoop_version`      | Desired version        | `1.4` |
+| `sourcecoop_target`       | Archive name           | `sourcecoop-{{ sourcecoop_version }}-bms.zip` |
 | `sourcecoop_install_path` | Installation directory | `/home/{{ steamcmd_user }}/black-mesa/bms` |
 
 ## Dependencies
